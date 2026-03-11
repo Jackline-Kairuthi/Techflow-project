@@ -20,3 +20,15 @@ def test_health_endpoint(client):
     assert response.status_code == 200
     data = response.get_json()
     assert data["status"] == "ok"
+
+from app import app
+
+def test_home_status_code():
+    response = app.test_client().get('/')
+    assert response.status_code == 200
+
+def test_home_message():
+    response = app.test_client().get('/')
+    assert b"TechFlow" in response.data
+
+
