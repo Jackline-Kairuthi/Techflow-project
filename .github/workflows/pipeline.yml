@@ -1,6 +1,6 @@
 name: TechFlow_Project CI Pipeline
 
-#Trigger Day 7 pipeline
+#Trigger Day 6 pipeline
 
 on:
   push:
@@ -29,12 +29,13 @@ jobs:
       - name: Run unit tests
         run: pytest -q
 
+#Trigger day 7 pipeline
   build-and-push:
     needs: run-tests
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+          - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Log in to Docker Hub
@@ -52,3 +53,19 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/techflow_app:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/techflow_app:${{ github.sha }}
+
+# Trigger day 8 pipelin
+deploy:
+  needs: build-and-push
+  runs-on: ubuntu-latest
+
+  steps:
+    - name: Connect to server and deploy
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /path/to/your/app
+          ./deploy.sh
