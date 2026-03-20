@@ -59,7 +59,7 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/techflow_app:${{ github.sha }}
 
   # -------------------------
-  # Job 3: Deploy to EC2
+  #  Job 3 & 4: Deploy to EC2 with Health Check + Rollback
   # -------------------------
   deploy:
     needs: build-and-push
@@ -74,9 +74,11 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/ec2-user
+            chmod +x deploy.sh
+            chmod +x health_check.sh
             ./deploy.sh
   # -------------------------
-  # Job 4: INTEGRATE EMAIL NOTIFICATIONS FOR PIPELINE STATUS
+  # Job 5: INTEGRATE EMAIL NOTIFICATIONS FOR PIPELINE STATUS
   # -------------------------
 
       - name: Send email on success
