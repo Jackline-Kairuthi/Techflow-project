@@ -76,6 +76,7 @@ jobs:
             cd /home/ec2-user
             chmod +x deploy.sh
             chmod +x health_check.sh
+            chmod +x rollback.sh
             ./deploy.sh
   # -------------------------
   # Job 5: INTEGRATE EMAIL NOTIFICATIONS FOR PIPELINE STATUS
